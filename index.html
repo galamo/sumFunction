@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,20 +9,48 @@
     <link rel="stylesheet" href="./index.css">
     <title>Document</title>
 </head>
+
 <body>
-    
+
 
     <div class="container">
         <h1 class="jumbotron"> Cars Management </h1>
         <div class="row">
-            <button class="btn btn-primary" id="bt"> click to draw  </button>
-            <input type="search" id="search">
+
+
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <select class="form-control form-control-md">
+                        <option>Type</option>
+                        <option>Type</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <input style="height:38px" type="text" id="search" class="form-control-file"
+                        id="exampleFormControlFile1">
+                </div>
+
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-primary" id="bt"> Search </button>
+            </div>
+
+
         </div>
         <div class="row">
+            <div>
+                <ul id="data" class="list-group">
+                    <li class="clone-list-item" class="list-group-item"></li>
+                </ul>
+            </div>
             <div class="loader" id="loader" style="display: none;"></div>
         </div>
     </div>
-    
+
     <script src="./cars.js"></script>
 </body>
+
 </html>

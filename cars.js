@@ -50,43 +50,62 @@ function generateSingleCar(index) {
 
 }
 
-(function () {
-    // DONT DO THIS!
-    const result = generateCars(100000, true);
-    console.log(result);
-    const myLastCar = generateSingleCar(1);
-    myLastCar.lp = 12345678;
-    result.push(myLastCar)
-    // result.forEach(function(element,index)  {
-    //     console.log(element,index)
-    // });
-    document.getElementById("bt").addEventListener("click", function () {
-        document.getElementById("loader").style.display = "block";
+function init() {
+    const result = generateCars(100, true);
+    draw(result)
+}
+init();
+function draw(arr) {
+    const data = document.getElementById("data");
+    arr.forEach(element => {
+        data.appendChild(getListItem(element))
+    });
+    function getListItem(element) {
+        const li = document.createElement("li")
+        li.classList.add("list-group-item")
+        li.innerText = element.lp
+        return li;
+    }
+}
 
-        setTimeout(function () {
-            //show image
-            document.getElementById("loader").style.display = "none";
-        }, 5000);
-        console.log("set timeout done? ")
-    })
 
-    document.getElementById("search").addEventListener("keyup", function () {
-        document.getElementById("loader").style.display = "block";
-        if (!this.value) return;
-        const value = Number(this.value)
+// (function () {
+//     // DONT DO THIS!
+//     const result = generateCars(100000, true);
+//     console.log(result);
+//     const myLastCar = generateSingleCar(1);
+//     myLastCar.lp = 12345678;
+//     result.push(myLastCar)
+//     // result.forEach(function(element,index)  {
+//     //     console.log(element,index)
+//     // });
+//     document.getElementById("bt").addEventListener("click", function () {
+//         document.getElementById("loader").style.display = "block";
 
-        setTimeout(() => {
-            const searchResult = [];
-            for (let index = 0; index < result.length; index++) {
-                if (result[index].lp === value) {
-                    console.log(result[index])
-                }
-            }
-            // console.log(result[value]);
-            document.getElementById("loader").style.display = "none";
-        }, 0);
-        // draw searchResult
-    })
+//         setTimeout(function () {
+//             //show image
+//             document.getElementById("loader").style.display = "none";
+//         }, 5000);
+//         console.log("set timeout done? ")
+//     })
 
-})()
+//     document.getElementById("search").addEventListener("keyup", function () {
+//         document.getElementById("loader").style.display = "block";
+//         if (!this.value) return;
+//         const value = Number(this.value)
+
+//         setTimeout(() => {
+//             const searchResult = [];
+//             for (let index = 0; index < result.length; index++) {
+//                 if (result[index].lp === value) {
+//                     console.log(result[index])
+//                 }
+//             }
+//             // console.log(result[value]);
+//             document.getElementById("loader").style.display = "none";
+//         }, 0);
+//         // draw searchResult
+//     })
+
+// })()
 
