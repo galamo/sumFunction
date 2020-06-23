@@ -119,6 +119,8 @@ function getCardItem(carData) {
     const cardImg = document.createElement("img");
     cardImg.src = cardsImages[carData.type];
     cardImg.classList.add("card-img-top")
+    cardImg.style.width = "300px"
+    cardImg.style.height = "250px"
     
     const cardBody = document.createElement("div")
     cardBody.classList.add("card-body")
@@ -174,10 +176,18 @@ function getRowItem(carData) {
     const sunRoof = document.createElement("td")
     sunRoof.innerText = carData.isSunRoof
     
+    const img = document.createElement("img")
+    const imgTd = document.createElement("td")
+    img.src = cardsImages[carData.type]
+    img.style.width = "30px"
+    img.style.height = "30px"
+    imgTd.appendChild(img)
+
     row.appendChild(lp)
     row.appendChild(type)
     row.appendChild(color)
     row.appendChild(doors)
     row.appendChild(sunRoof)
+    row.appendChild(imgTd)
     return row
  }
