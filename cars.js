@@ -70,8 +70,8 @@ function generateSingleCar(index) {
     const cars = generateCars(100, true)
     DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
-    DOM.tableData = document.getElementById("data-table");
-    draw(cars, DOM.cardsData, "cards");
+    DOM.tableData = document.getElementById("table");
+    draw(cars, DOM.cardsData, "list");
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
@@ -94,15 +94,24 @@ function draw(data, domContainer, displayType) {
     if (typeof domContainer !== 'object') return;
     const displayFunction = displayFunctions[displayType]
     if (typeof displayFunction !== 'function') return;
-    data.forEach((car) => {
-        domContainer.append(displayFunction(car))
-    });
+    if(displayType === "table"){
+        domContainer.append(createTableHead())
+        const tbody = document.getElementById("table-data")
+        data.forEach((car) => {
+            tbody.append(displayFunction(car))
+        });
+    }
+    else{
+        data.forEach((car) => {
+            domContainer.append(displayFunction(car))
+        });
+    }
 }
 
 function clearDOM() {
     DOM.listData.innerHTML = "";
     DOM.cardsData.innerHTML = "";
-    DOM.Ta.innerHTML = "";
+    DOM.tableData.innerHTML = "";
 }
 function getListItem(carData) {
     const listItem = document.createElement("li");
@@ -191,4 +200,50 @@ function getRowItem(carData) {
     row.appendChild(sunRoof)
     row.appendChild(imgTd)
     return row
+ }
+
+
+ function createTableHead(){
+     const table = document.createElement("table")
+    table.classList.add("table")
+
+    const tHead = document.createElement("thead")
+    table.appendChild(tHead)
+
+    const tr = document.createElement("tr")
+    tHead.appendChild(tr)
+
+    const lp = document.createElement("th")
+    lp.innerText = "Licence Plate"
+    tr.appendChild(lp)
+
+    const type = document.createElement("th")
+    type.innerText = "Type"
+    tr.appendChild(type)
+
+    const color = document.createElement("th")
+    color.innerText = "Color"
+    tr.appendChild(color)
+
+    const doors = document.createElement("th")
+    doors.innerText = "Doors"
+    tr.appendChild(doors)
+
+    const sunRoof = document.createElement("th")
+    sunRoof.innerText = "Sun Roof ?"
+    tr.appendChild(sunRoof)
+
+    const img = document.createElement("th")
+    img.innerText = "Image "
+    tr.appendChild(img)
+
+    const tBody = document.createElement("tbody")
+    tBody.id = "table-data"
+    table.appendChild(tBody)
+
+
+
+
+
+     return table
  }
