@@ -70,15 +70,21 @@ function generateSingleCar(index) {
     const cars = generateCars(100, true)
     DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
+    DOM.tableData = document.getElementById("data-table");
     draw(cars, DOM.cardsData, "cards");
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
+    const tableViewButton = document.getElementById("tableView");
+    
     listViewButton.addEventListener("click", function () {
         draw(cars, DOM.listData, "list")
     })
     cardViewButton.addEventListener("click", function () {
         draw(cars, DOM.cardsData, "cards")
+    })
+    tableViewButton.addEventListener("click", function () {
+        draw(cars, DOM.tableData, "table")
     })
 }())
 
@@ -129,13 +135,49 @@ function getCardItem(carData) {
     const cardTextColor = document.createElement("p")
     cardTextColor.classList.add("card-text")
     cardTextColor.innerText = `Car Color : ${carData.color}`
+    
+    const cardTextDoors = document.createElement("p")
+    cardTextDoors.classList.add("card-text")
+    cardTextDoors.innerText = `Car Doors : ${carData.doors}`
+    
+    const cardTextSunRoof = document.createElement("p")
+    cardTextSunRoof.classList.add("card-text")
+    cardTextSunRoof.innerText = `Does The Car Have Sunroof? : ${carData.isSunRoof}`
 
     card.appendChild(cardImg)
     card.appendChild(cardBody)
     cardBody.appendChild(cardTitle)
     cardBody.appendChild(cardTextLp)
     cardBody.appendChild(cardTextColor)
-
+    cardBody.appendChild(cardTextDoors)
+    cardBody.appendChild(cardTextSunRoof)
+    
     return card;
 }
-function getRowItem() { }
+function getRowItem(carData) {
+    const row = document.createElement("tr")
+    row.style.backgroundColor = carData.color
+    
+    const lp = document.createElement("td")
+    lp.innerText = carData.lp
+   
+     
+    const type = document.createElement("td")
+    type.innerText = carData.type
+
+    const color = document.createElement("td")
+    color.innerText = carData.color
+
+    const doors = document.createElement("td")
+    doors.innerText = carData.doors
+
+    const sunRoof = document.createElement("td")
+    sunRoof.innerText = carData.isSunRoof
+    
+    row.appendChild(lp)
+    row.appendChild(type)
+    row.appendChild(color)
+    row.appendChild(doors)
+    row.appendChild(sunRoof)
+    return row
+ }
