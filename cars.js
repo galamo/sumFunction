@@ -1,4 +1,4 @@
-const colors = ["red", "green", "yellow", "black"];
+const colors = ["red", "green", "yellow", "Blue"];
 const types = ["BMW", "MRCDS", "Mazda", "Subaro"];
 const doors = [2, 4, 5];
 const DOM = {}
@@ -116,6 +116,7 @@ function getCardItem(carData) {
     
     const cardBody = document.createElement("div")
     cardBody.classList.add("card-body")
+    cardBody.style.backgroundColor = carData.color
 
     const cardTitle = document.createElement("h5")
     cardTitle.classList.add("card-title")
