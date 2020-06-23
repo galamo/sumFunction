@@ -102,6 +102,7 @@ function draw(data, domContainer, displayType) {
 function clearDOM() {
     DOM.listData.innerHTML = "";
     DOM.cardsData.innerHTML = "";
+    DOM.Ta.innerHTML = "";
 }
 function getListItem(carData) {
     const listItem = document.createElement("li");
