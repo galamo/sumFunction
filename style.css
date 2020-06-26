@@ -1,0 +1,118 @@
+.none {
+  display: none;
+}
+
+.btn i {
+  font-size: 1.2rem;
+}
+
+.list-item {
+  height: 100px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[5];
+      grid-template-columns: repeat(5, 1fr);
+  justify-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.list-item:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+.list-item p {
+  font-weight: bold;
+}
+
+.list-item .list-item-wrap {
+  height: 100% !important;
+  margin-left: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.list-item .list-item-logo {
+  width: 90px;
+  padding-left: 15px;
+}
+
+.cards-container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+}
+
+.cards-container .card-img-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 180px;
+}
+
+.cards-container .card-img-wrap img {
+  margin: auto;
+  width: 240px;
+}
+
+.cards-container .card-body {
+  height: 150px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  -ms-grid-rows: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+}
+
+.cards-container .card-body h3 {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-column: 1 / span 2;
+  -ms-grid-row: 1;
+  grid-row: 1;
+}
+
+.cards-container .card-body img {
+  -ms-grid-column: 1;
+  grid-column: 1;
+  -ms-grid-row: 2;
+  grid-row: 2;
+  -ms-grid-column-align: center;
+      justify-self: center;
+}
+
+.cards-container .card-body p {
+  -ms-grid-column: 2;
+  grid-column: 2 / 2;
+  -ms-grid-row: 2;
+  grid-row: 2;
+  -ms-grid-column-align: center;
+      justify-self: center;
+}
+
+.table {
+  text-align: center;
+}
+
+.table img {
+  height: 40px;
+}
+
+.table th {
+  background-color: black;
+  color: white;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f0f0f0;
+}
+/*# sourceMappingURL=style.css.map */
