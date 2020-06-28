@@ -109,6 +109,8 @@ let currentView = "list";
   DOM.cardsData = document.getElementById("data-cards");
   DOM.tableData = document.getElementById("data-table");
   draw(cars, DOM.listData, "list");
+  const searchCategory = document.getElementById("searchCategory");
+  const searchBar = document.getElementById("searchBar");
 
   const listViewButton = document.getElementById("listView");
   const cardViewButton = document.getElementById("cardView");
@@ -119,7 +121,8 @@ let currentView = "list";
   });
   cardViewButton.addEventListener("click", function () {
     currentView = "cards";
-    draw(cars, DOM.cardsData, "cards");
+    console.log(searchBar.value);
+    draw(cars, DOM.listData, "cards");
   });
   tableViewButton.addEventListener("click", function () {
     currentView = "table";
@@ -127,7 +130,7 @@ let currentView = "list";
   });
   console.log(currentView);
 
-  search(cars, DOM, currentView);
+  search(cars, DOM);
 })();
 
 // function _arrayToObject(array, newObjectKey) {
@@ -138,22 +141,31 @@ let currentView = "list";
 //   return oCars;
 // }
 
-function search(array, container, view) {
-  const searchCategory = document.getElementById("searchCategory");
-  const searchBar = document.getElementById("searchBar");
-  const searchBarValue = searchBar.value;
-  // const selectedCategory = searchCategory.value;
-  // const oCars = _arrayToObject(array, newObjectKey);
-  // const matchedCars = [];
-
-  let filteredContainer;
-
+function search(array, container) {
   searchBar.addEventListener("keyup", (e) => {
-    console.log(e.target.value);
+    let selectedCategory = searchCategory.value;
     let typedValue = e.target.value.toLowerCase();
-    const filteredResult = array.filter((car) => {
-      return car.brand.toLowerCase().includes(typedValue);
-    });
+    let filteredResult;
+    let filteredContainer;
+
+    if (selectedCategory == "brand") {
+      filteredResult = array.filter((car) => {
+        return car.brand.toLowerCase().includes(typedValue);
+      });
+    } else if (selectedCategory == "color") {
+      filteredResult = array.filter((car) => {
+        return car.color.toLowerCase().includes(typedValue);
+      });
+    } else if (selectedCategory == "lp") {
+      filteredResult = array.filter((car) => {
+        return car.lp.toString().includes(typedValue);
+      });
+    } else {
+      filteredResult = array.filter((car) => {
+        return car.type.toLowerCase().includes(typedValue);
+      });
+    }
+
     switch (currentView) {
       case "list":
         filteredContainer = container.listData;
@@ -165,7 +177,6 @@ function search(array, container, view) {
         filteredContainer = container.tableData;
         break;
     }
-    console.log(filteredContainer);
     draw(filteredResult, filteredContainer, currentView);
   });
 }
@@ -179,7 +190,6 @@ function draw(data, domContainer, displayType) {
   if (displayType === "table") {
     _appendTableHead(domContainer);
   }
-  console.log(data);
   data.forEach((car) => {
     domContainer.append(displayFunction(car));
   });
