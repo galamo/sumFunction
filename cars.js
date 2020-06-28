@@ -108,7 +108,7 @@ let currentView = "list";
   DOM.listData = document.getElementById("data-list");
   DOM.cardsData = document.getElementById("data-cards");
   DOM.tableData = document.getElementById("data-table");
-  draw(cars, DOM.listData, "list");
+  draw(cars, DOM, "list");
   const searchCategory = document.getElementById("searchCategory");
   const searchBar = document.getElementById("searchBar");
 
@@ -117,68 +117,47 @@ let currentView = "list";
   const tableViewButton = document.getElementById("tableView");
   listViewButton.addEventListener("click", function () {
     currentView = "list";
-    draw(cars, DOM.listData, "list");
+    search(cars, searchBar.value);
   });
   cardViewButton.addEventListener("click", function () {
     currentView = "cards";
     console.log(searchBar.value);
-    draw(cars, DOM.listData, "cards");
+    search(cars, searchBar.value);
   });
   tableViewButton.addEventListener("click", function () {
     currentView = "table";
-    draw(cars, DOM.tableData, "table");
+    search(cars, searchBar.value);
   });
   console.log(currentView);
-
-  search(cars, DOM);
+  searchBar.addEventListener("keyup", (e) => {
+    let wantedValue = e.target.value.toLowerCase();
+    search(cars, wantedValue);
+  });
 })();
 
-// function _arrayToObject(array, newObjectKey) {
-//   const oCars = [];
-//   for (i = 0; i < array.length; i++) {
-//     oCars[array[i].newObjectKey.toString()] = array[i];
-//   }
-//   return oCars;
-// }
+function search(array, typedValue) {
+  let selectedCategory = searchCategory.value;
+  let filteredResult;
 
-function search(array, container) {
-  searchBar.addEventListener("keyup", (e) => {
-    let selectedCategory = searchCategory.value;
-    let typedValue = e.target.value.toLowerCase();
-    let filteredResult;
-    let filteredContainer;
+  if (selectedCategory == "brand") {
+    filteredResult = array.filter((car) => {
+      return car.brand.toLowerCase().includes(typedValue);
+    });
+  } else if (selectedCategory == "color") {
+    filteredResult = array.filter((car) => {
+      return car.color.toLowerCase().includes(typedValue);
+    });
+  } else if (selectedCategory == "lp") {
+    filteredResult = array.filter((car) => {
+      return car.lp.toString().includes(typedValue);
+    });
+  } else {
+    filteredResult = array.filter((car) => {
+      return car.type.toLowerCase().includes(typedValue);
+    });
+  }
 
-    if (selectedCategory == "brand") {
-      filteredResult = array.filter((car) => {
-        return car.brand.toLowerCase().includes(typedValue);
-      });
-    } else if (selectedCategory == "color") {
-      filteredResult = array.filter((car) => {
-        return car.color.toLowerCase().includes(typedValue);
-      });
-    } else if (selectedCategory == "lp") {
-      filteredResult = array.filter((car) => {
-        return car.lp.toString().includes(typedValue);
-      });
-    } else {
-      filteredResult = array.filter((car) => {
-        return car.type.toLowerCase().includes(typedValue);
-      });
-    }
-
-    switch (currentView) {
-      case "list":
-        filteredContainer = container.listData;
-        break;
-      case "cards":
-        filteredContainer = container.cardsData;
-        break;
-      case "table":
-        filteredContainer = container.tableData;
-        break;
-    }
-    draw(filteredResult, filteredContainer, currentView);
-  });
+  draw(filteredResult, DOM, currentView);
 }
 
 function draw(data, domContainer, displayType) {
@@ -187,11 +166,25 @@ function draw(data, domContainer, displayType) {
   if (typeof domContainer !== "object") return;
   const displayFunction = displayFunctions[displayType];
   if (typeof displayFunction !== "function") return;
+  let filteredContainer;
+
+  switch (displayType) {
+    case "list":
+      filteredContainer = domContainer.listData;
+      break;
+    case "cards":
+      filteredContainer = domContainer.cardsData;
+      break;
+    case "table":
+      filteredContainer = domContainer.tableData;
+      break;
+  }
+
   if (displayType === "table") {
-    _appendTableHead(domContainer);
+    _appendTableHead(filteredContainer);
   }
   data.forEach((car) => {
-    domContainer.append(displayFunction(car));
+    filteredContainer.append(displayFunction(car));
   });
 }
 
