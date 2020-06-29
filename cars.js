@@ -70,7 +70,7 @@ function generateSingleCar(index) {
     DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table");
-    draw(cars, DOM.cardsData, "list");
+    draw(cars, DOM.cardsData, "cards");
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
