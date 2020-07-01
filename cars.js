@@ -124,6 +124,31 @@ function generateSingleCar(index) {
         DOM.whatToDraw = "table"
         draw(cars, DOM.tableData, "table")
         draw(headers, DOM.tableHead, "tableHeader", false)
+        
+        if (DOM.whatToDraw === "table") {
+            
+           var divOfCheckbox = document.getElementById("checkbox")
+           divOfCheckbox.innerText = "is there a sunRoof"
+             var checkbox = document.createElement("input")
+            checkbox.type = 'checkbox'
+            divOfCheckbox.appendChild(checkbox)
+            checkbox.addEventListener('change', function(event) {
+                if (event.target.checked) {
+                    clearDOM()
+                    draw(cars, DOM.tableData, "table")
+                    draw(headers, DOM.tableHead, "tableHeader", false)
+                    headers[0][4].isVisible = false;
+                } else {
+                    clearDOM()
+                    draw(cars, DOM.tableData, "table")
+                    draw(headers, DOM.tableHead, "tableHeader", false)
+                    headers[0][4].isVisible = true;
+                }
+              });
+            
+            
+        }
+        
     })
 
     searchOperation.addEventListener("click", function () {
@@ -245,3 +270,25 @@ function getRowItem(carData) {
     }
 }
 
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var checkboxes = document.querySelectorAll('input[type=checkbox]');
+      
+    for (var checkbox of checkboxes) {
+      checkbox.addEventListener('change', function(event) {
+        if (event.target.checked) {
+            
+            headers[0][4].isVisible = true;
+        } else {
+            
+            headers[0][4].isVisible = false;
+        }
+      });
+    }
+  }, false);
+  
+  
