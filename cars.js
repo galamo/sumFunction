@@ -1,5 +1,5 @@
 const colors = ["red", "green", "yellow", "black"];
-const types = ["BMW", "MRCDS", "Mazda", "Subaro"];
+const types = ["BMW", "Mercedes", "Mazda", "Subaro"];
 const doors = [2, 4, 5];
 const DOM = {}
 
@@ -34,7 +34,7 @@ const headers = [[
     {
         value: "isSunRoof",
         label: "Sun Roof",
-        isVisible: true
+        isVisible: false
     },
     {
         value: "isAWD",
@@ -69,7 +69,11 @@ function generateSingleCar(index) {
 
 
     function _generateLP() {
-        return Math.ceil(Math.random() * 999999);
+        cellOne = Math.floor(Math.random() * (999 - 100) + 100);
+        cellTwo = Math.ceil(Math.random() * (99 - 10) + 10);
+        cellThree = Math.floor(Math.random() * (999 - 100) + 100);
+
+        return `${cellOne}-${cellTwo}-${cellThree}`;
     }
     function _generateColor() {
         return colors[Math.floor(Math.random() * colors.length)];
@@ -103,33 +107,48 @@ function generateSingleCar(index) {
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table-data");
     DOM.tableHead = document.getElementById("table-head");
-    DOM.whatToDraw = "list"
+    DOM.whatToDraw = "list";
 
     draw(cars, DOM.listData, DOM.whatToDraw);
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
     const tableViewButton = document.getElementById("tableView");
-    const searchOperation = document.getElementById("searchOperation");
-
+    const searchOperation = document.getElementById("searchValue");
+    const showSunroof = document.getElementById("showSunroof");
+    const sunRoof = document.getElementById("sunRoof");
+    
     listViewButton.addEventListener("click", function () {
+        showSunroof.classList.add('d-none')
         DOM.whatToDraw = "list";
         draw(cars, DOM.listData, "list")
     })
     cardViewButton.addEventListener("click", function () {
+        showSunroof.classList.add('d-none')
         DOM.whatToDraw = "cards"
         draw(cars, DOM.cardsData, "cards")
     })
     tableViewButton.addEventListener("click", function () {
+        showSunroof.classList.remove('d-none')
         DOM.whatToDraw = "table"
         draw(cars, DOM.tableData, "table")
         draw(headers, DOM.tableHead, "tableHeader", false)
     })
+    sunRoof.addEventListener('change', function () {
+        const firstRowFromHeaders = headers[0];
+        const sunroofHeader = firstRowFromHeaders.find(item => item.value === 'isSunRoof');
+        sunroofHeader.isVisible = sunRoof.checked;
+        draw(cars, DOM.tableData, "table")
+        draw(headers, DOM.tableHead, "tableHeader", false, true)
+    })
 
-    searchOperation.addEventListener("click", function () {
+    searchOperation.addEventListener("keyup", function () {
         const value = document.getElementById("searchValue").value;
+        const searchBy = document.getElementById('searchBy');
+        const searchByValue = searchBy.options[searchBy.selectedIndex].value;
+
         if (!value) return;
-        const result = cars.filter(car => { return car.type.toLowerCase() === value.toLowerCase() })
+        const result = cars.filter(car => { return car[searchByValue].toLowerCase().includes(value.toLowerCase())})
         if (DOM.whatToDraw === "table") {
             draw(result, DOM.tableData, "table")
             draw(headers, DOM.tableHead, "tableHeader", false)
@@ -145,8 +164,8 @@ function generateSingleCar(index) {
 }())
 
 
-function draw(data, domContainer, displayType, clear = true) {
-    if (clear) clearDOM()
+function draw(data, domContainer, displayType, clear = true, clearOnly = false) {
+    if (clear || clearOnly) clearDOM(clearOnly)
     if (!Array.isArray(data)) return;
     if (typeof domContainer !== 'object') return;
     const displayFunction = displayFunctions[displayType]
@@ -157,33 +176,33 @@ function draw(data, domContainer, displayType, clear = true) {
     });
 }
 
-function clearDOM() {
+function clearDOM(clearOnly) {
     // DOM.listData.innerHTML = "";
     // DOM.cardsData.innerHTML = "";
     // DOM.tableData.innerHTML = "";
 
     // this is more dynamic
-
     Object.keys(DOM).forEach((keyInDom) => {
         if (typeof DOM[keyInDom] !== "object") return;
-        DOM[keyInDom].innerHTML = "";
+        if (clearOnly) DOM.tableHead.innerHTML = "";
+        else { DOM[keyInDom].innerHTML = "" }
     })
-
 }
 function getListItem(carData) {
     const listItem = document.createElement("li");
     listItem.classList.add("list-group-item");
-    listItem.innerText = `car lp: ${carData.lp}, car color: ${carData.color}`;
+    listItem.innerHTML = `<b>car type:</b> ${carData.type}<br> <b>car lp:</b> ${carData.lp}, <b>car color:</b> ${carData.color}`;
     return listItem;
 }
 
 function getCardItem(carData) {
     const card = document.createElement("div");
-    card.style.border = "1px solid black";
-    card.style.height = "50px";
-    card.style.width = "300px";
     card.style.display = "inline-block";
-    card.innerText = `car lp: ${carData.lp}, car color: ${carData.color} , car type: ${carData.type}`;
+    card.style.textAlign = 'center'
+    card.style.border = "1px solid black";
+    card.style.height = "150px";
+    card.style.width = "200px";
+    card.innerHTML = `<b>car type:</b><br> ${carData.type}<br> <b>car lp:</b><br> ${carData.lp}<br> <b>car color:</b> <br>${carData.color}`;
     return card;
 }
 
