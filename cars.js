@@ -67,7 +67,7 @@ function generateSingleCar(index) {
 
 (function () {
     const cars = generateCars(100, true)
-     .listData = document.getElementById("data");
+    DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table");
     draw(cars, DOM.cardsData, "cards");
@@ -191,7 +191,7 @@ function getRowItem(carData) {
     img.style.width = "30px"
     img.style.height = "30px"
     imgTd.appendChild(img)
- 
+
     row.appendChild(lp)
     row.appendChild(type)
     row.appendChild(color)
