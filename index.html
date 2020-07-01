@@ -16,25 +16,21 @@
     <div class="container">
         <h1 class="jumbotron"> Cars Management </h1>
         <div class="row">
+            <div class="col-lg-3">
+                <input id="searchValue" class="form-control form-control-md" type="text" placeholder="Search Car">
+            </div>
             <div class="col-lg-2">
-                <select class="form-control">
+                <select class="form-control" id="searchBy">
                     <option value="type">Type</option>
                     <option value="color">Color</option>
+                    <option value="lp">Licenes Plate</option>
                 </select>
             </div>
-            <div class="col-lg-2">
-                <input id="searchValue" class="form-control form-control-md" type="text" placeholder="search">
-            </div>
-            <div class="col-lg-2">
-                <button id="searchOperation" class="btn btn-success"> Search </button>
-            </div>
-            <div class="col-lg-2">
+            <div class="col-lg-7 ml-auto text-right">
+                <label for="sun_roof" id="showSunroof" class="mr-5 d-none">
+                <input type="checkbox" name="sun_roof" id="sunRoof" class="mr-2">Show Sun Roof</label>
                 <button id="listView" class="btn btn-warning"> List view </button>
-            </div>
-            <div class="col-lg-2">
                 <button id="cardView" class="btn btn-danger"> Cards view </button>
-            </div>
-            <div class="col-lg-2">
                 <button id="tableView" class="btn btn-info"> Table view </button>
             </div>
         </div>
