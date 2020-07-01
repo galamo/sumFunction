@@ -34,7 +34,7 @@ const headers = [[
     {
         value: "isSunRoof",
         label: "Sun Roof",
-        isVisible: true
+        isVisible: false
     },
     {
         value: "isAWD",
@@ -114,10 +114,12 @@ function generateSingleCar(index) {
 
     listViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "list";
+        document.getElementById("checkbox").innerText = ""
         draw(cars, DOM.listData, "list")
     })
     cardViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "cards"
+        document.getElementById("checkbox").innerText = ""
         draw(cars, DOM.cardsData, "cards")
     })
     tableViewButton.addEventListener("click", function () {
@@ -125,6 +127,8 @@ function generateSingleCar(index) {
         draw(cars, DOM.tableData, "table")
         draw(headers, DOM.tableHead, "tableHeader", false)
         
+        // checkbox Sunroof
+
         if (DOM.whatToDraw === "table") {
             
            var divOfCheckbox = document.getElementById("checkbox")
@@ -134,15 +138,15 @@ function generateSingleCar(index) {
             divOfCheckbox.appendChild(checkbox)
             checkbox.addEventListener('change', function(event) {
                 if (event.target.checked) {
-                    clearDOM()
-                    draw(cars, DOM.tableData, "table")
-                    draw(headers, DOM.tableHead, "tableHeader", false)
-                    headers[0][4].isVisible = false;
-                } else {
-                    clearDOM()
-                    draw(cars, DOM.tableData, "table")
-                    draw(headers, DOM.tableHead, "tableHeader", false)
                     headers[0][4].isVisible = true;
+                    clearDOM()
+                    draw(cars, DOM.tableData, "table")
+                    draw(headers, DOM.tableHead, "tableHeader", false)
+                } else {
+                    headers[0][4].isVisible = false;
+                    clearDOM()
+                    draw(cars, DOM.tableData, "table")
+                    draw(headers, DOM.tableHead, "tableHeader", false)
                 }
               });
             
@@ -274,21 +278,4 @@ function getRowItem(carData) {
 
 
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    var checkboxes = document.querySelectorAll('input[type=checkbox]');
-      
-    for (var checkbox of checkboxes) {
-      checkbox.addEventListener('change', function(event) {
-        if (event.target.checked) {
-            
-            headers[0][4].isVisible = true;
-        } else {
-            
-            headers[0][4].isVisible = false;
-        }
-      });
-    }
-  }, false);
-  
   
