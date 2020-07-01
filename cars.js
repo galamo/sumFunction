@@ -127,7 +127,7 @@ function generateSingleCar(index) {
         draw(cars, DOM.tableData, "table")
         draw(headers, DOM.tableHead, "tableHeader", false)
         
-        // checkbox Sunroof
+        // checkbox Sunrooff
 
         if (DOM.whatToDraw === "table") {
             
