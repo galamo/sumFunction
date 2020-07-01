@@ -34,7 +34,7 @@ const headers = [[
     {
         value: "isSunRoof",
         label: "Sun Roof",
-        isVisible: true
+        isVisible: false
     },
     {
         value: "isAWD",
@@ -114,16 +114,45 @@ function generateSingleCar(index) {
 
     listViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "list";
+        document.getElementById("checkbox").innerText = ""
         draw(cars, DOM.listData, "list")
     })
     cardViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "cards"
+        document.getElementById("checkbox").innerText = ""
         draw(cars, DOM.cardsData, "cards")
     })
     tableViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "table"
         draw(cars, DOM.tableData, "table")
         draw(headers, DOM.tableHead, "tableHeader", false)
+        
+        // checkbox Sunrooff
+
+        if (DOM.whatToDraw === "table") {
+            
+           var divOfCheckbox = document.getElementById("checkbox")
+           divOfCheckbox.innerText = "is there a sunRoof"
+             var checkbox = document.createElement("input")
+            checkbox.type = 'checkbox'
+            divOfCheckbox.appendChild(checkbox)
+            checkbox.addEventListener('change', function(event) {
+                if (event.target.checked) {
+                    headers[0][4].isVisible = true;
+                    clearDOM()
+                    draw(cars, DOM.tableData, "table")
+                    draw(headers, DOM.tableHead, "tableHeader", false)
+                } else {
+                    headers[0][4].isVisible = false;
+                    clearDOM()
+                    draw(cars, DOM.tableData, "table")
+                    draw(headers, DOM.tableHead, "tableHeader", false)
+                }
+              });
+            
+            
+        }
+        
     })
 
     searchOperation.addEventListener("click", function () {
@@ -245,3 +274,8 @@ function getRowItem(carData) {
     }
 }
 
+
+
+
+
+  
