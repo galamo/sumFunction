@@ -34,7 +34,7 @@ const headers = [[
     {
         value: "isSunRoof",
         label: "Sun Roof",
-        isVisible: true
+        isVisible: false    
     },
     {
         value: "isAWD",
@@ -111,6 +111,7 @@ function generateSingleCar(index) {
     const cardViewButton = document.getElementById("cardView");
     const tableViewButton = document.getElementById("tableView");
     const searchOperation = document.getElementById("searchOperation");
+    const mycheckbox = document.getElementById("checkboxsun");
 
     listViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "list";
@@ -125,6 +126,14 @@ function generateSingleCar(index) {
         draw(cars, DOM.tableData, "table")
         draw(headers, DOM.tableHead, "tableHeader", false)
     })
+
+    mycheckbox.addEventListener('change', function () {
+        const firstRowFromHeaders = headers[0].find(item => item.value === 'isSunRoof');
+        firstRowFromHeaders.isVisible = mycheckbox.checked;
+        draw(cars, DOM.tableData, "table")
+        draw(headers, DOM.tableHead, "tableHeader", false, true)
+    })
+
 
     searchOperation.addEventListener("click", function () {
         const value = document.getElementById("searchValue").value;
@@ -244,4 +253,5 @@ function getRowItem(carData) {
         return td;
     }
 }
+
 
