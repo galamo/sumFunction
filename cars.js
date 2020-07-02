@@ -8,6 +8,7 @@ const displayFunctions = {
   list: getListItem,
   table: getRowItem,
   tableHeader: getRowHeaderItem,
+  tableCheckbox: drawCheckboxItem,
 };
 
 const headers = [
@@ -102,6 +103,7 @@ function generateSingleCar(index) {
   DOM.cardsData = document.getElementById("data-cards");
   DOM.tableData = document.getElementById("table-data");
   DOM.tableHead = document.getElementById("table-head");
+  DOM.tableCheckboxes = document.getElementById("tableCheckboxes");
   DOM.whatToDraw = "list";
 
   draw(cars, DOM.listData, DOM.whatToDraw);
@@ -123,6 +125,20 @@ function generateSingleCar(index) {
     DOM.whatToDraw = "table";
     draw(cars, DOM.tableData, "table");
     draw(headers, DOM.tableHead, "tableHeader", false);
+    drawCheckboxItem();
+    const checkbox = document.getElementById("sunroofCheckbox");
+    checkbox.addEventListener("click", (e) => {
+      let myHeaders = headers[0];
+      let sunroof;
+      myHeaders.forEach((x) => {
+        if (x.value == "isSunRoof") {
+          sunroof = x;
+        }
+      });
+      sunroof.isVisible = e.target.checked;
+      draw(cars, DOM.tableData, "table");
+      draw(headers, DOM.tableHead, "tableHeader", false);
+    });
   });
 
   searchOperation.addEventListener("click", function () {
@@ -142,20 +158,10 @@ function generateSingleCar(index) {
       draw(result, DOM.listData, "list");
     }
   });
-
-  listViewButton.addEventListener("click", function () {
-    draw(cars, DOM.listData, "list");
-  });
-  cardViewButton.addEventListener("click", function () {
-    draw(cars, DOM.cardsData, "cards");
-  });
-  tableViewButton.addEventListener("click", function () {
-    draw(cars, DOM.tableData, "table");
-  });
 })();
 
 function draw(data, domContainer, displayType, clear = true) {
-  if (clear) clearDOM();
+  if (clear) clearDOM(displayType);
   if (!Array.isArray(data)) return;
   if (typeof domContainer !== "object") return;
   const displayFunction = displayFunctions[displayType];
@@ -166,7 +172,7 @@ function draw(data, domContainer, displayType, clear = true) {
   });
 }
 
-function clearDOM() {
+function clearDOM(itemView) {
   // DOM.listData.innerHTML = "";
   // DOM.cardsData.innerHTML = "";
   // DOM.tableData.innerHTML = "";
@@ -175,6 +181,9 @@ function clearDOM() {
 
   Object.keys(DOM).forEach((keyInDom) => {
     if (typeof DOM[keyInDom] !== "object") return;
+    if (itemView == "table" && keyInDom == "tableCheckboxes") {
+      return;
+    }
     DOM[keyInDom].innerHTML = "";
   });
 }
@@ -259,20 +268,22 @@ function getRowItem(carData) {
   }
 }
 
-function drawTableHead(columnsArray, domContainer) {
-  const tr = document.createElement("tr");
-  console.log("hi");
-  for (i = 0; i < columnsArray.length; i++) {
-    let th = document.createElement("th");
-    th.classList.add("col");
-    th.innerHTML = `${columnsArray[i].label}`;
-    tr.appendChild(th);
-  }
-  domContainer.appendChild(tr);
+function drawCheckboxItem() {
+  const tableCheckboxes = document.getElementById("tableCheckboxes");
+  const sunroofCheckbox = document.createElement("input");
+  const sunroofLabel = document.createElement("label");
+  sunroofCheckbox.type = "checkbox";
+  sunroofCheckbox.id = "sunroofCheckbox";
+  sunroofCheckbox.checked = true;
+  sunroofLabel.for = sunroofCheckbox.id;
+  sunroofLabel.innerText = "Show sunroof";
+  tableCheckboxes.append(sunroofCheckbox, sunroofLabel);
 }
-//     <tr>
-//     <th scope="col">LP</th>
-//     <th scope="col">Color</th>
-//     <th scope="col">Type</th>
-//     <th scope="col">Doors</th>
-// </tr>
+
+// <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+// <label for="vehicle1"> I have a bike</label><br>
+// <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+// <label for="vehicle2"> I have a car</label><br>
+// <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+// <label for="vehicle3"> I have a boat</label><br><br>
+// <input type="submit" value="Submit">
