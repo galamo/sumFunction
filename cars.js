@@ -111,7 +111,17 @@ function generateSingleCar(index) {
     const cardViewButton = document.getElementById("cardView");
     const tableViewButton = document.getElementById("tableView");
     const searchOperation = document.getElementById("searchOperation");
-
+    const isSunRoofCheckbox = document.getElementById("isSunRoof");
+    isSunRoofCheckbox.addEventListener("change", function () {
+        console.log(this.id)
+        const [headersConfig] = headers;
+        const headerObj = headersConfig.find(item => item.value === this.id);
+        headerObj.isVisible = false;
+        console.log(headerObj)
+        DOM.whatToDraw = "table"
+        draw(cars, DOM.tableData, "table")
+        draw(headers, DOM.tableHead, "tableHeader", false)
+    })
     listViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "list";
         draw(cars, DOM.listData, "list")
@@ -126,8 +136,13 @@ function generateSingleCar(index) {
         draw(headers, DOM.tableHead, "tableHeader", false)
     })
 
+
     searchOperation.addEventListener("click", function () {
-        const value = document.getElementById("searchValue").value;
+        const value = document.getElement
+
+
+
+        ById("searchValue").value;
         if (!value) return;
         const result = cars.filter(car => { return car.type.toLowerCase() === value.toLowerCase() })
         if (DOM.whatToDraw === "table") {
