@@ -132,7 +132,7 @@ function generateSingleCar(index) {
   DOM.whatToDraw = "list";
 
   draw(DATA, DOM.listData, DOM.whatToDraw);
-  draw(DATA, DOM.searchOptions, "searchOptions");
+  draw(headers, DOM.searchOptions, "searchOptions", false);
 
   const listViewButton = document.getElementById("listView");
   const cardViewButton = document.getElementById("cardView");
@@ -175,13 +175,13 @@ function generateSingleCar(index) {
 
   searchOperation.addEventListener("click", function () {
     const value = document.getElementById("searchValue").value;
+    const category = document.getElementById("selectBox").value;
     if (!value) return;
     const result = DATA.filter((car) => {
-      return car.type.toLowerCase() === value.toLowerCase();
+      return car[category].toLowerCase() === value.toLowerCase();
     });
     if (DOM.whatToDraw === "table") {
-      draw(result, DOM.tableData, "table");
-      draw(headers, DOM.tableHead, "tableHeader", false);
+      _drawTable(result, headers);
     }
     if (DOM.whatToDraw === "cards") {
       draw(result, DOM.cardsData, "cards");
@@ -219,6 +219,9 @@ function clearDOM() {
 
   Object.keys(DOM).forEach((keyInDom) => {
     if (typeof DOM[keyInDom] !== "object") return;
+    if (keyInDom === "searchOptions") {
+      return;
+    }
     DOM[keyInDom].innerHTML = "";
   });
 }
@@ -263,8 +266,34 @@ function getRowHeaderItem(headers) {
   }
 }
 
-function getCheckboxes(internalHeders) {
-  const checkboxedDivs = internalHeders
+function getSearchOptions(innerHeaders) {
+  console.log("getSearchOptions function is responsive");
+  const select = document.createElement("select");
+  const searchableInnerHeaders = innerHeaders
+    .filter((item) => {
+      return item.isSearchable;
+    })
+    .map((item) => {
+      return _generateOption(item);
+    });
+  select.append(...searchableInnerHeaders);
+  select.classList.add("form-control");
+  select.id = "selectBox";
+  return select;
+
+  function _generateOption(arrayObject) {
+    console.log("generateOption function is responsive");
+    const option = document.createElement("option");
+    const { label, value } = arrayObject;
+    option.innerText = label;
+    option.value = value;
+    return option;
+  }
+  // return <select> [ <option></option>,<option></option>,<option></option>,<option></option> ] </select>
+}
+
+function getCheckboxes(internalHeaders) {
+  const checkboxedDivs = internalHeaders
     .filter((header) => {
       return !header.isConstant;
     })
@@ -278,7 +307,6 @@ function getCheckboxes(internalHeders) {
 
   function _getCheckbox(cb) {
     const { label, isVisible, value } = cb;
-
     const div = document.createElement("DIV");
     const span = document.createElement("span");
     const input = document.createElement("input");
@@ -348,8 +376,4 @@ function getRowItem(carData) {
     td.innerText = currentValue;
     return td;
   }
-}
-
-function getSearchOptions() {
-  // return <select> [ <option></option>,<option></option>,<option></option>,<option></option> ] </select>
 }
