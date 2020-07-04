@@ -1,3 +1,4 @@
+let searchBy = "lp"
 const colors = ["red", "green", "yellow", "black"];
 const types = ["BMW", "MRCDS", "Mazda", "Subaro"];
 const doors = [2, 4, 5];
@@ -125,12 +126,12 @@ function generateSingleCar(index) {
     DOM.tableData = document.getElementById("table-data");
     DOM.tableHead = document.getElementById("table-head");
     DOM.checkboxes = document.getElementById("checkboxes");
-    DOM.searchOptions = document.getElementById("searchOptions");
-
+    // DOM.searchOptions = document.getElementById("searchOptions");
+    getSearchOptions()
     DOM.whatToDraw = "list"
-
+    
     draw(DATA, DOM.listData, DOM.whatToDraw);
-    draw(DATA, DOM.searchOptions, "searchOptions");
+    // draw(DATA, DOM.searchOptions, "searchOptions");
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
@@ -141,6 +142,12 @@ function generateSingleCar(index) {
     // isSunRoofCheckbox.addEventListener("change", _displayColumn);
     // isAWDCheckbox.addEventListener("change", _displayColumn);
 
+    const select = document.getElementById("select")
+    
+    select.addEventListener("change", (event)=>{
+        searchBy = event.target.value        
+    
+    });
     function _displayColumn() {
         //this = input
 
@@ -177,7 +184,9 @@ function generateSingleCar(index) {
     searchOperation.addEventListener("click", function () {
         const value = document.getElementById("searchValue").value;
         if (!value) return;
-        const result = DATA.filter(car => { return car.type.toLowerCase() === value.toLowerCase() })
+        console.log(select);
+        
+        const result = DATA.filter(car => { return car[searchBy].toLowerCase() === value.toLowerCase() })
         if (DOM.whatToDraw === "table") {
             draw(result, DOM.tableData, "table")
             draw(headers, DOM.tableHead, "tableHeader", false)
@@ -227,7 +236,7 @@ function clearDOM() {
 function getListItem(carData) {
     const listItem = document.createElement("li");
     listItem.classList.add("list-group-item");
-    listItem.innerText = `car lp: ${carData.lp}, car color: ${carData.color}`;
+    listItem.innerText = `car lp: ${carData.lp}, car color: ${carData.color} ,car type: ${carData.type} , car doors: ${carData.doors} `;
     return listItem;
 }
 
@@ -346,5 +355,21 @@ function getRowItem(carData) {
 }
 
 function getSearchOptions(){
-    // return <select> [ <option></option>,<option></option>,<option></option>,<option></option> ] </select>
+    const searchContainer = document.getElementById("searchOptions")
+    const select = document.createElement("select");
+    headers[0].forEach((header)=>{
+        const option = document.createElement("option");
+        option.innerText = header.label;
+        option.value = header.value;
+        
+        
+
+        select.appendChild(option);
+    })
+    select.id ="select"
+    searchContainer.appendChild(select)
+    
+    
+    
 }
+
