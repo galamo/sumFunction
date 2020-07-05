@@ -1,8 +1,8 @@
 const colors = ["red", "green", "yellow", "black"];
 const types = ["BMW", "MRCDS", "Mazda", "Subaro"];
 const doors = [2, 4, 5];
-const DOM = {}
-const DATA = generateCars(100, true)
+const DOM = {};
+const DATA = generateCars(100, true);
 const displayFunctions = {
     "cards": getCardItem,
     "list": getListItem,
@@ -18,28 +18,28 @@ const headers = [[
         label: "LP",
         isVisible: true,
         isConstant: false,
-        isSearchable: true
+        isSearchable: true,
     },
     {
         value: "color",
         label: "Color",
         isVisible: true,
         isConstant: true,
-        isSearchable: true
+        isSearchable: true,
     },
     {
         value: "type",
         label: "Type",
         isVisible: false,
         isConstant: false,
-        isSearchable: true
+        isSearchable: true,
     },
     {
         value: "doors",
         label: "Doors",
         isVisible: true,
         isConstant: false,
-        isSearchable: true
+        isSearchable: true,
 
     },
     {
@@ -47,21 +47,21 @@ const headers = [[
         label: "Sun Roof",
         isVisible: false,
         isConstant: false,
-        isSearchable: true
+        isSearchable: true,
     },
     {
         value: "isAWD",
         label: "4 X 4",
         isVisible: false,
         isConstant: false,
-        isSearchable: true
+        isSearchable: true,
     },
     {
         value: "year",
         label: "Year Created",
         isVisible: true,
         isConstant: false,
-        isSearchable: true
+        isSearchable: true,
     }
 ]]
 
@@ -74,8 +74,8 @@ function generateCars(numberOfCars, isArray) { //return array with Cars ( each c
         else {
             const singleCar = generateSingleCar(index)
             cars[singleCar.lp.toString()] = singleCar;
-        }
-    }
+        };
+    };
     return cars;
 }
 
@@ -87,7 +87,7 @@ function generateSingleCar(index) {
         doors: _generateDoors(),
         isSunRoof: _isSunRoof(index),
         isAWD: _isAWD(index),
-        year: _generateYear()
+        year: _generateYear(),
     };
 
 
@@ -101,13 +101,13 @@ function generateSingleCar(index) {
         return doors[Math.floor(Math.random() * doors.length)];
     }
     function _isSunRoof(index) {
-        return index % 2 === 0 ? true : false
+        return index % 2 === 0 ? true : false;
     }
     function _generateType() {
         return types[Math.floor(Math.random() * types.length)];
     }
     function _isAWD(index) {
-        return index % 2 === 0 ? true : false
+        return index % 2 === 0 ? true : false;
     }
     function _generateYear() {
         return new Date().toUTCString();
@@ -133,7 +133,7 @@ function generateSingleCar(index) {
     DOM.checkboxes = document.getElementById("checkboxes");
     DOM.searchOptions = document.getElementById("searchOptions");
 
-    DOM.whatToDraw = "list"
+    DOM.whatToDraw = "list";
 
     draw(DATA, DOM.listData, DOM.whatToDraw);
     draw(headers, DOM.searchOptions, "searchOptions",false);
@@ -158,67 +158,69 @@ function generateSingleCar(index) {
         const headersConfig = headers[0];
         if (!Array.isArray(headersConfig)) return;
         const isSunRoofHeaderObj = headersConfig.find(function (headerObj) {
-            console.log(this)
-            return headerObj.value === elementId
+            return headerObj.value === elementId;
         })
         // const isSunRoofHeaderObj = headersConfig.find(h => h.value === "isSunRoof") shorter way
         isSunRoofHeaderObj.isVisible = isChecked;
-        _drawTable(DATA, headers)
+        _drawTable(DATA, headers);
     }
 
     listViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "list";
         draw(DATA, DOM.listData, "list");
         draw(headers, DOM.searchOptions, "searchOptions",false);
-    })
+    });
     cardViewButton.addEventListener("click", function () {
-        DOM.whatToDraw = "cards"
+        DOM.whatToDraw = "cards";
         draw(DATA, DOM.cardsData, "cards");
         draw(headers, DOM.searchOptions, "searchOptions",false);
-    })
+    });
     tableViewButton.addEventListener("click", function () {
         _drawTable(DATA, headers);
         draw(headers, DOM.searchOptions, "searchOptions",false);
-    })
+    });
 
 
 
     searchOperation.addEventListener("click", function () {
         const value = document.getElementById("searchValue").value;
         if (!value) return;
-        const result = DATA.filter(car => { return car.type.toLowerCase() === value.toLowerCase() })
+        const selectOptions = document.getElementById("select");
+        const currentOption = selectOptions.options[selectOptions.selectedIndex].value;
+        const result = DATA.filter(car => { return car.[currentOption].toLowerCase().includes(value.toLowerCase()) })
         if (DOM.whatToDraw === "table") {
-            draw(result, DOM.tableData, "table")
-            draw(headers, DOM.tableHead, "tableHeader", false)
-        }
+            draw(result, DOM.tableData, "table");
+            draw(headers, DOM.tableHead, "tableHeader", false);
+            draw(headers, DOM.checkboxes, "getCheckboxes", false);
+        };
         if (DOM.whatToDraw === "cards") {
-            draw(result, DOM.cardsData, "cards")
-        }
+            draw(result, DOM.cardsData, "cards");
+        };
         if (DOM.whatToDraw === "list") {
-            draw(result, DOM.listData, "list")
-        }
-
+            draw(result, DOM.listData, "list");
+        };
     })
 }())
+
 function _drawTable(cars, headers) {
-    DOM.whatToDraw = "table"
-    draw(cars, DOM.tableData, "table")
-    draw(headers, DOM.tableHead, "tableHeader", false)
-    draw(headers, DOM.checkboxes, "getCheckboxes", false)
-}
+    DOM.whatToDraw = "table";
+    draw(cars, DOM.tableData, "table");
+    draw(headers, DOM.tableHead, "tableHeader", false);
+    draw(headers, DOM.checkboxes, "getCheckboxes", false);
+};
 
 
 function draw(data, domContainer, displayType, clear = true) {
-    if (clear) clearDOM()
+    if (clear) clearDOM();
     if (!Array.isArray(data)) return;
     if (typeof domContainer !== 'object') return;
-    const displayFunction = displayFunctions[displayType]
+    const displayFunction = displayFunctions[displayType];
     if (typeof displayFunction !== 'function') return;
     data.forEach(item => {
-        const result = displayFunction(item)
-        domContainer.append(result)
+        const result = displayFunction(item);
+        domContainer.append(result);
     });
-}
+};
 
 function clearDOM() {
     // DOM.listData.innerHTML = "";
@@ -232,47 +234,61 @@ function clearDOM() {
         DOM[keyInDom].innerHTML = "";
     })
 
-}
+};
+
 function getListItem(carData) {
     const listItem = document.createElement("li");
     listItem.classList.add("list-group-item");
-    listItem.innerHTML = `<b><i>LP:</i></b> ${carData.lp}, <b><i>Color:</i></b> ${carData.color}, <b><i>Type:</i></b> ${carData.type}, <b><i>Doors:</i></b> ${carData.doors}, <b><i>Is Sun Roof:</i></b> ${carData.isSunRoof}, <b><i>Is 4X4:</i></b> ${carData._isAWD}, <b><i>Year:</i></b> ${carData.year}`;
+    listItem.innerHTML = `<b><i>LP:</i></b> ${carData.lp},
+                          <b><i>Color:</i></b> ${carData.color},
+                          <b><i>Type:</i></b> ${carData.type},
+                          <b><i>Doors:</i></b> ${carData.doors},
+                          <b><i>Is Sun Roof:</i></b> ${carData.isSunRoof},
+                          <b><i>Is 4X4:</i></b> ${carData._isAWD},
+                          <b><i>Year:</i></b> ${carData.year}`;
     return listItem;
-}
+};
 
 function getCardItem(carData) {
     const card = document.createElement("div");
     card.classList.add("card-main");
-    card.innerHTML = `<b><i>LP:</i></b> ${carData.lp}, <b><i>Color:</i></b> ${carData.color}<br><b><i>Type:</i></b> ${carData.type}<br><b><i>Doors:</i></b> ${carData.doors}<br><b><i>Is Sun Roof:</i></b> ${carData.isSunRoof}<br><b><i>Is 4X4:</i></b> ${carData._isAWD}<br><b><i>Year:</i></b> ${carData.year}`;
+    card.innerHTML = `<b><i>LP:</i></b> ${carData.lp}<br>
+                      <b><i>Color:</i></b> ${carData.color}<br>
+                      <b><i>Type:</i></b> ${carData.type}<br>
+                      <b><i>Doors:</i></b> ${carData.doors}<br>
+                      <b><i>Is Sun Roof:</i></b> ${carData.isSunRoof}<br>
+                      <b><i>Is 4X4:</i></b> ${carData._isAWD}<br>
+                      <b><i>Year:</i></b> ${carData.year}`;
     return card;
-}
+};
 
 function getRowHeaderItem(headers) {
     const ths = headers.filter((header) => { return header.isVisible }).map(header => {
         const { label, isVisible } = header;
         if (isVisible) return _getTH(label)
-    })
+    });
+
     const tr = _getTR();
     tr.append(...ths);
     return tr;
     function _getTR() {
         return document.createElement("TR");
-    }
+    };
 
     function _getTH(value) {
         const th = document.createElement("TH");
         th.style.color = "red";
         th.innerText = value;
         return th;
-    }
-}
+    };
+};
 
 function getCheckboxes(internalHeders) {
     const checkboxedDivs = internalHeders.filter((header) => { return !header.isConstant }).map(header => {
-        return _getCheckbox(header)
-    })
+        return _getCheckbox(header);
+    });
 
-    const div = document.createElement("DIV")
+    const div = document.createElement("DIV");
     div.append(...checkboxedDivs);
     return div;
 
@@ -282,14 +298,14 @@ function getCheckboxes(internalHeders) {
         const div = document.createElement("DIV");
         const span = document.createElement("span");
         const input = document.createElement("input");
-        input.addEventListener("change", _displayColumn)
+        input.addEventListener("change", _displayColumn);
         input.id = value;
         span.innerText = label;
         input.checked = isVisible;
-        input.type = "checkbox"
-        div.append(span, input)
+        input.type = "checkbox";
+        div.append(span, input);
         return div;
-    }
+    };
 
     function _displayColumn() {
         //this = input
@@ -302,14 +318,15 @@ function getCheckboxes(internalHeders) {
         const headersConfig = headers[0];
         if (!Array.isArray(headersConfig)) return;
         const isSunRoofHeaderObj = headersConfig.find(function (headerObj) {
-            console.log(this)
-            return headerObj.value === elementId
-        })
+            return headerObj.value === elementId;
+        });
+
         // const isSunRoofHeaderObj = headersConfig.find(h => h.value === "isSunRoof") shorter way
         isSunRoofHeaderObj.isVisible = isChecked;
-        _drawTable(DATA, headers)
-    }
-}
+        _drawTable(DATA, headers);
+    };
+};
+
 function getRowItem(carData) {
     // const lp = carData.lp;
     // const color = carData.color;
@@ -324,18 +341,18 @@ function getRowItem(carData) {
     const tds = visibleHeaders.map((header) => {
         const { value } = header;
         const currentValue = carData[value];
-        return _getTD(currentValue)
-    })
+        return _getTD(currentValue);
+    });
 
     // const tdLP = _getTD(lp);
     // const tdColor = _getTD(color);
     // const tdType = _getTD(type);
     // const tdDoors = _getTD(doors);
-    tr.append(...tds)
+    tr.append(...tds);
     return tr;
     function _getTR() {
         return document.createElement("TR");
-    }
+    };
 
 
 
@@ -343,20 +360,20 @@ function getRowItem(carData) {
         const allowedTypes = ["string", "number", "boolean"];
         const theType = typeof value;
         // if (!allowedTypes.includes(theType)) return;
-        let currentValue = !allowedTypes.includes(theType) ? "-" : value
+        let currentValue = !allowedTypes.includes(theType) ? "-" : value;
         // if (theType !== "string" && theType !== "number") return;
         const td = document.createElement("TD");
         td.innerText = currentValue;
         return td;
-    }
-}
+    };
+};
 
 function getSearchOptions(internalHeders){
     // return <select> [ <option></option>,<option></option>,<option></option>,<option></option> ] </select>
     
     const selectOptions = internalHeders.filter((header) => { return header.isSearchable }).map(header => {
         return _getOptions(header);
-    })
+    });
     
     const select = document.createElement("select");
     select.id ="select";
@@ -370,5 +387,5 @@ function getSearchOptions(internalHeders){
         option.innerText = label;
         option.value = value;
         return option;
-    }
-}
+    };
+};
