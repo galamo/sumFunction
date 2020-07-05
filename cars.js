@@ -24,38 +24,44 @@ const headers = [[
         value: "color",
         label: "Color",
         isVisible: true,
-        isConstant: true
+        isConstant: true,
+        isSearchable: true
     },
     {
         value: "type",
         label: "Type",
         isVisible: false,
-        isConstant: false
+        isConstant: false,
+        isSearchable: true
     },
     {
         value: "doors",
         label: "Doors",
         isVisible: true,
-        isConstant: false
+        isConstant: false,
+        isSearchable: true
 
     },
     {
         value: "isSunRoof",
         label: "Sun Roof",
         isVisible: false,
-        isConstant: false
+        isConstant: false,
+        isSearchable: true
     },
     {
         value: "isAWD",
         label: "4 X 4",
         isVisible: false,
-        isConstant: false
+        isConstant: false,
+        isSearchable: true
     },
     {
         value: "year",
         label: "Year Created",
         isVisible: true,
-        isConstant: false
+        isConstant: false,
+        isSearchable: true
     }
 ]]
 
@@ -130,7 +136,7 @@ function generateSingleCar(index) {
     DOM.whatToDraw = "list"
 
     draw(DATA, DOM.listData, DOM.whatToDraw);
-    draw(DATA, DOM.searchOptions, "searchOptions");
+    draw(headers, DOM.searchOptions, "searchOptions",false);
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
@@ -162,14 +168,17 @@ function generateSingleCar(index) {
 
     listViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "list";
-        draw(DATA, DOM.listData, "list")
+        draw(DATA, DOM.listData, "list");
+        draw(headers, DOM.searchOptions, "searchOptions",false);
     })
     cardViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "cards"
-        draw(DATA, DOM.cardsData, "cards")
+        draw(DATA, DOM.cardsData, "cards");
+        draw(headers, DOM.searchOptions, "searchOptions",false);
     })
     tableViewButton.addEventListener("click", function () {
-        _drawTable(DATA, headers)
+        _drawTable(DATA, headers);
+        draw(headers, DOM.searchOptions, "searchOptions",false);
     })
 
 
@@ -345,6 +354,24 @@ function getRowItem(carData) {
     }
 }
 
-function getSearchOptions(){
+function getSearchOptions(internalHeders){
     // return <select> [ <option></option>,<option></option>,<option></option>,<option></option> ] </select>
+    
+    const selectOptions = internalHeders.filter((header) => { return header.isSearchable }).map(header => {
+        return _getOptions(header);
+    })
+    
+    const select = document.createElement("select");
+    select.id ="select";
+    select.append(...selectOptions);
+    return select;
+
+    function _getOptions(so) {
+        const { label, value } = so;
+
+        const option = document.createElement("option");
+        option.innerText = label;
+        option.value = value;
+        return option;
+    }
 }
