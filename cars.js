@@ -142,6 +142,7 @@ function generateSingleCar(index) {
     const cardViewButton = document.getElementById("cardView");
     const tableViewButton = document.getElementById("tableView");
     const searchOperation = document.getElementById("searchOperation");
+    const select = document.getElementById("select");
     // const isSunRoofCheckbox = document.getElementById("isSunRoof");
     // const isAWDCheckbox = document.getElementById("isAWD");
     // isSunRoofCheckbox.addEventListener("change", _displayColumn);
@@ -180,18 +181,18 @@ function generateSingleCar(index) {
         draw(headers, DOM.searchOptions, "searchOptions",false);
     });
 
-
+    select.addEventListener("change", (e)=>{
+        searchBy = e.target.value;
+    });
 
     searchOperation.addEventListener("click", function () {
         const value = document.getElementById("searchValue").value;
+    
         if (!value) return;
-        const selectOptions = document.getElementById("select");
-        const currentOption = selectOptions.options[selectOptions.selectedIndex].value;
-        const result = DATA.filter(car => { return car.[currentOption].toLowerCase().includes(value.toLowerCase()) })
+        const result = DATA.filter(car => { return car[searchBy].toLowerCase() === value.toLowerCase() })
         if (DOM.whatToDraw === "table") {
             draw(result, DOM.tableData, "table");
             draw(headers, DOM.tableHead, "tableHeader", false);
-            draw(headers, DOM.checkboxes, "getCheckboxes", false);
         };
         if (DOM.whatToDraw === "cards") {
             draw(result, DOM.cardsData, "cards");
@@ -386,6 +387,7 @@ function getSearchOptions(internalHeders){
         const option = document.createElement("option");
         option.innerText = label;
         option.value = value;
+        option.id = value;
         return option;
     };
 };
