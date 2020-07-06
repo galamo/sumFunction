@@ -41,7 +41,7 @@ const headers = [[
         label: "Doors",
         isVisible: true,
         isConstant: false,
-        isSearchable: true,
+        isSearchable: false,
 
     },
     {
@@ -49,21 +49,21 @@ const headers = [[
         label: "Sun Roof",
         isVisible: false,
         isConstant: false,
-        isSearchable: true,
+        isSearchable: false,
     },
     {
         value: "isAWD",
         label: "4 X 4",
         isVisible: false,
         isConstant: false,
-        isSearchable: true,
+        isSearchable: false,
     },
     {
         value: "year",
         label: "Year Created",
         isVisible: true,
         isConstant: false,
-        isSearchable: true,
+        isSearchable: false,
     }
 ]]
 
@@ -354,7 +354,27 @@ function getRowItem(carData) {
     }
 }
 
-function getSearchOptions() {
-    //return ready select 
+function getSearchOptions(headers) {
+    const isSearchableHeaders = headers.filter(({ isSearchable }) => isSearchable);
+    const HTMLSelect = _getSelect();
+    const HTMLOptions = _getOptions(isSearchableHeaders);
+    HTMLSelect.append(...HTMLOptions);
+    return HTMLSelect;
+
+    function _getSelect() {
+        const select = document.createElement("SELECT");
+        select.classList.add("form-control");
+        return select;
+    }
+
+    function _getOptions(h) {
+        const options = h.map(({ value, label }) => {
+            const currentOption = document.createElement("OPTION");
+            currentOption.value = value;
+            currentOption.innerText = label;
+            return currentOption;
+        })
+        return options;
+    }
 }
 
