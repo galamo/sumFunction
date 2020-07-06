@@ -135,40 +135,19 @@ function generateSingleCar(index, lp) {
     DOM.tableData = document.getElementById("table-data");
     DOM.tableHead = document.getElementById("table-head");
     DOM.checkboxes = document.getElementById("checkboxes");
-    DOM.searchOptions = document.getElementById("searchOptions");
+    searchOptions = document.getElementById("searchOptions");
 
     DOM.whatToDraw = "list"
 
     draw(DATA, DOM.listData, DOM.whatToDraw);
-    draw(headers, DOM.searchOptions, "searchOptions");
+    draw(headers, searchOptions, "searchOptions", false);
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
     const tableViewButton = document.getElementById("tableView");
     const searchOperation = document.getElementById("searchOperation");
-    // const isSunRoofCheckbox = document.getElementById("isSunRoof");
-    // const isAWDCheckbox = document.getElementById("isAWD");
-    // isSunRoofCheckbox.addEventListener("change", _displayColumn);
-    // isAWDCheckbox.addEventListener("change", _displayColumn);
-
-    function _displayColumn() {
-        //this = input
 
 
-        // const [headersConfig] = headers;
-        const elementId = this.id;
-        const isChecked = this.checked;
-
-        const headersConfig = headers[0];
-        if (!Array.isArray(headersConfig)) return;
-        const isSunRoofHeaderObj = headersConfig.find(function (headerObj) {
-            console.log(this)
-            return headerObj.value === elementId
-        })
-        // const isSunRoofHeaderObj = headersConfig.find(h => h.value === "isSunRoof") shorter way
-        isSunRoofHeaderObj.isVisible = isChecked;
-        _drawTable(DATA, headers)
-    }
 
     listViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "list";
@@ -187,7 +166,6 @@ function generateSingleCar(index, lp) {
     searchOperation.addEventListener("click", function () {
         const value = document.getElementById("searchValue").value;
         const searchBy = document.getElementById("search-select").value;
-        console.log(typeof value);
         if (!value) return;
 
         const currentValue = typeof value === 'string' ? value.toLowerCase() : value;
@@ -196,17 +174,9 @@ function generateSingleCar(index, lp) {
             const stringValue = car[searchBy].toString();
             return stringValue === currentValue
         })
-        _drawTable(result, headers);
-        // if (DOM.whatToDraw === "table") {
-        //     draw(result, DOM.tableData, "table")
-        //     draw(headers, DOM.tableHead, "tableHeader", false)
-        // }
-        // if (DOM.whatToDraw === "cards") {
-        //     draw(result, DOM.cardsData, "cards")
-        // }
-        // if (DOM.whatToDraw === "list") {
-        //     draw(result, DOM.listData, "list")
-        // }
+        if (DOM.whatToDraw === "table") return _drawTable(result, headers);
+        if (DOM.whatToDraw === "cards") return draw(result, DOM.cardsData, "cards")
+        return draw(result, DOM.listData, "list")
 
     })
 }())
