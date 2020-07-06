@@ -14,6 +14,26 @@ const displayFunctions = {
 };
 
 
+
+
+// DONT DO THIS:
+// setTimeout(() => {
+//     console.log("start running append")
+//     const a = document.createElement("DIV")
+//     a.id = "modal-message"
+//     a.innerText = "Check out our new Search";
+//     a.className = "modal-inline"
+//     document.body.append(a)
+
+// }, 1000)
+
+// setTimeout(() => {
+//     document.getElementById("modal-message").remove();
+
+// }, 4000)
+
+
+
 const headers = [[
     {
         value: "lp",
@@ -130,6 +150,7 @@ function generateSingleCar(index, lp) {
 
 
 (function () {
+
     DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table-data");

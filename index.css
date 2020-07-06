@@ -12,7 +12,7 @@
     100% { transform: rotate(360deg); }
   }
   
-  .fixedd{
+  .modal-inline{
       color:red;
       background-color: lightgreen;
       position: fixed;
