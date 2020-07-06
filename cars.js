@@ -18,7 +18,8 @@ const headers = [[
         label: "LP",
         isVisible: true,
         isConstant: false,
-        isSearchable: true,
+        isSearchable: false
+
     },
     {
         value: "color",
@@ -353,39 +354,5 @@ function getRowItem(carData) {
     }
 }
 
-function getSearchOptions(headers) {
-    
-    const searchOptions = headers.filter((header) => { return header.isSearchable }).map(header => {
-        return _getSearchOption(header)
-    })
-    
-    const select = document.createElement("select");
-    select.addEventListener("change", _displayProperty)
-    select.append(...searchOptions);
-    const div = document.createElement("div");
-    div.appendChild(select);
-    return div;
 
-
-    function _getSearchOption(sV) {
-        const { label } = sV;
-        const property = document.createElement("option");
-        property.id = label;
-        property.innerText = label;
-        return property
-    }
-    function _displayProperty() {
-        const elementId = this.id;
-        const isChecked = this.checked;
-        const headersConfig = headers[0];
-        if (!Array.isArray(headersConfig)) return;
-        const isSunRoofHeaderObj = headersConfig.find(function (headerObj) {
-            console.log(this)
-            return headerObj.value === elementId
-        })
-        // const isSunRoofHeaderObj = headersConfig.find(h => h.value === "isSunRoof") shorter way
-        isSunRoofHeaderObj.isVisible = isChecked;
-        _drawTable(DATA, headers)
-
-    }
 }
