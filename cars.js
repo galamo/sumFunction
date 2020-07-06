@@ -9,7 +9,7 @@ const displayFunctions = {
     "table": getRowItem,
     "tableHeader": getRowHeaderItem,
     "getCheckboxes": getCheckboxes,
-    "searchOptions": getSearchOptions,
+    // "searchOptions": getSearchOptions,
 };
 
 const headers = [[
@@ -250,8 +250,8 @@ function getCardItem(carData) {
 }
 
 function getRowHeaderItem(myHeaders) {
-    const ths1 = myHeaders.filter((header) => { return header.isVisible }).map(header => {
-        const { label, isVisible } = heder;
+    const ths = myHeaders.filter((header) => { return header.isVisible }).map(header => {
+        const { label, isVisible } = header;
         if (isVisible) return _getTH(label)
     })
 
@@ -355,4 +355,3 @@ function getRowItem(carData) {
 }
 
 
-}
