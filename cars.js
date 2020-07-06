@@ -1,5 +1,6 @@
 const colors = ["red", "green", "yellow", "black"];
-const types = ["BMW", "MRCDS", "Mazda", "Subaro"];
+const generatedTypes = ["BMW", "MRCDS", "Mazda", "Subaro"];
+const types = generatedTypes.map(s => s.toLocaleLowerCase())
 const doors = [2, 4, 5];
 const DOM = {}
 const DATA = generateCars(100, true)
@@ -9,8 +10,29 @@ const displayFunctions = {
     "table": getRowItem,
     "tableHeader": getRowHeaderItem,
     "getCheckboxes": getCheckboxes,
-    // "searchOptions": getSearchOptions,
+    "searchOptions": getSearchOptions,
 };
+
+
+
+
+// DONT DO THIS:
+// setTimeout(() => {
+//     console.log("start running append")
+//     const a = document.createElement("DIV")
+//     a.id = "modal-message"
+//     a.innerText = "Check out our new Search";
+//     a.className = "modal-inline"
+//     document.body.append(a)
+
+// }, 1000)
+
+// setTimeout(() => {
+//     document.getElementById("modal-message").remove();
+
+// }, 4000)
+
+
 
 const headers = [[
     {
@@ -18,8 +40,7 @@ const headers = [[
         label: "LP",
         isVisible: true,
         isConstant: false,
-        isSearchable: false
-
+        isSearchable: true
     },
     {
         value: "color",
@@ -32,7 +53,7 @@ const headers = [[
     {
         value: "type",
         label: "Type",
-        isVisible: false,
+        isVisible: true,
         isConstant: false,
         isSearchable: true,
     },
@@ -41,7 +62,7 @@ const headers = [[
         label: "Doors",
         isVisible: true,
         isConstant: false,
-        isSearchable: true,
+        isSearchable: false,
 
     },
     {
@@ -49,21 +70,21 @@ const headers = [[
         label: "Sun Roof",
         isVisible: false,
         isConstant: false,
-        isSearchable: true,
+        isSearchable: false,
     },
     {
         value: "isAWD",
         label: "4 X 4",
         isVisible: false,
         isConstant: false,
-        isSearchable: true,
+        isSearchable: false,
     },
     {
         value: "year",
         label: "Year Created",
         isVisible: true,
         isConstant: false,
-        isSearchable: true,
+        isSearchable: false,
     }
 ]]
 
@@ -78,12 +99,13 @@ function generateCars(numberOfCars, isArray) { //return array with Cars ( each c
             cars[singleCar.lp.toString()] = singleCar;
         }
     }
+    cars.push(generateSingleCar(1, 123456789));
     return cars;
 }
 
-function generateSingleCar(index) {
+function generateSingleCar(index, lp) {
     return {
-        lp: _generateLP(),
+        lp: lp || _generateLP(),
         color: _generateColor(),
         type: _generateType(),
         doors: _generateDoors(),
@@ -128,45 +150,25 @@ function generateSingleCar(index) {
 
 
 (function () {
+
     DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table-data");
     DOM.tableHead = document.getElementById("table-head");
     DOM.checkboxes = document.getElementById("checkboxes");
-    DOM.searchOptions = document.getElementById("searchOptions");
+    searchOptions = document.getElementById("searchOptions");
 
     DOM.whatToDraw = "list"
 
     draw(DATA, DOM.listData, DOM.whatToDraw);
-    draw(headers, DOM.searchOptions, "searchOptions");
+    draw(headers, searchOptions, "searchOptions", false);
 
     const listViewButton = document.getElementById("listView");
     const cardViewButton = document.getElementById("cardView");
     const tableViewButton = document.getElementById("tableView");
     const searchOperation = document.getElementById("searchOperation");
-    // const isSunRoofCheckbox = document.getElementById("isSunRoof");
-    // const isAWDCheckbox = document.getElementById("isAWD");
-    // isSunRoofCheckbox.addEventListener("change", _displayColumn);
-    // isAWDCheckbox.addEventListener("change", _displayColumn);
-
-    function _displayColumn() {
-        //this = input
 
 
-        // const [headersConfig] = headers;
-        const elementId = this.id;
-        const isChecked = this.checked;
-
-        const headersConfig = headers[0];
-        if (!Array.isArray(headersConfig)) return;
-        const isSunRoofHeaderObj = headersConfig.find(function (headerObj) {
-            console.log(this)
-            return headerObj.value === elementId
-        })
-        // const isSunRoofHeaderObj = headersConfig.find(h => h.value === "isSunRoof") shorter way
-        isSunRoofHeaderObj.isVisible = isChecked;
-        _drawTable(DATA, headers)
-    }
 
     listViewButton.addEventListener("click", function () {
         DOM.whatToDraw = "list";
@@ -184,18 +186,18 @@ function generateSingleCar(index) {
 
     searchOperation.addEventListener("click", function () {
         const value = document.getElementById("searchValue").value;
+        const searchBy = document.getElementById("search-select").value;
         if (!value) return;
-        const result = DATA.filter(car => { return car.type.toLowerCase() === value.toLowerCase() })
-        if (DOM.whatToDraw === "table") {
-            draw(result, DOM.tableData, "table")
-            draw(headers, DOM.tableHead, "tableHeader", false)
-        }
-        if (DOM.whatToDraw === "cards") {
-            draw(result, DOM.cardsData, "cards")
-        }
-        if (DOM.whatToDraw === "list") {
-            draw(result, DOM.listData, "list")
-        }
+
+        const currentValue = typeof value === 'string' ? value.toLowerCase() : value;
+        console.log(currentValue, searchBy)
+        const result = DATA.filter(car => {
+            const stringValue = car[searchBy].toString();
+            return stringValue === currentValue
+        })
+        if (DOM.whatToDraw === "table") return _drawTable(result, headers);
+        if (DOM.whatToDraw === "cards") return draw(result, DOM.cardsData, "cards")
+        return draw(result, DOM.listData, "list")
 
     })
 }())
@@ -354,4 +356,28 @@ function getRowItem(carData) {
     }
 }
 
+function getSearchOptions(headers) {
+    const isSearchableHeaders = headers.filter(({ isSearchable }) => isSearchable);
+    const HTMLSelect = _getSelect();
+    const HTMLOptions = _getOptions(isSearchableHeaders);
+    HTMLSelect.append(...HTMLOptions);
+    return HTMLSelect;
+
+    function _getSelect() {
+        const select = document.createElement("SELECT");
+        select.id = "search-select";
+        select.classList.add("form-control");
+        return select;
+    }
+
+    function _getOptions(h) {
+        const options = h.map(({ value, label }) => {
+            const currentOption = document.createElement("OPTION");
+            currentOption.value = value;
+            currentOption.innerText = label;
+            return currentOption;
+        })
+        return options;
+    }
+}
 
