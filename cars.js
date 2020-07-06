@@ -16,47 +16,7 @@ const displayFunctions = {
 const TIME_TO_HIDE_MODAL = 4 * 1000;
 const START_TIME_TO_SHOW_MODAL = 2 * 1000;
 
-const notifications = [ { } ]
-function startNotifications() {
-    _showModal("Check out our new Search!!!");
 
-    function _showModal(message) {
-        setTimeout(() => {
-            document.body.append(getModal(message))
-            _hideModal();
-        }, START_TIME_TO_SHOW_MODAL);
-    }
-    function _hideModal() {
-        setTimeout(() => {
-            document.getElementById("currentModal").remove()
-        }, TIME_TO_HIDE_MODAL);
-    }
-}
-
-function getModal(message) {
-    const modal = document.createElement("DIV");
-    modal.classList.add("modal-internal");
-    modal.id = "currentModal";
-    modal.innerText = message;
-    return modal;
-}
-
-
-// DONT DO THIS:
-// setTimeout(() => {
-//     console.log("start running append")
-//     const a = document.createElement("DIV")
-//     a.id = "modal-message"
-//     a.innerText = "Check out our new Search";
-//     a.className = "modal-inline"
-//     document.body.append(a)
-
-// }, 1000)
-
-// setTimeout(() => {
-//     document.getElementById("modal-message").remove();
-
-// }, 4000)
 
 
 
