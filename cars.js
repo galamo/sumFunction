@@ -13,7 +13,33 @@ const displayFunctions = {
     "searchOptions": getSearchOptions,
 };
 
+const TIME_TO_HIDE_MODAL = 4 * 1000;
+const START_TIME_TO_SHOW_MODAL = 2 * 1000;
 
+const notifications = [ { } ]
+function startNotifications() {
+    _showModal("Check out our new Search!!!");
+
+    function _showModal(message) {
+        setTimeout(() => {
+            document.body.append(getModal(message))
+            _hideModal();
+        }, START_TIME_TO_SHOW_MODAL);
+    }
+    function _hideModal() {
+        setTimeout(() => {
+            document.getElementById("currentModal").remove()
+        }, TIME_TO_HIDE_MODAL);
+    }
+}
+
+function getModal(message) {
+    const modal = document.createElement("DIV");
+    modal.classList.add("modal-internal");
+    modal.id = "currentModal";
+    modal.innerText = message;
+    return modal;
+}
 
 
 // DONT DO THIS:
@@ -150,7 +176,7 @@ function generateSingleCar(index, lp) {
 
 
 (function () {
-
+    startNotifications();
     DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table-data");
