@@ -13,24 +13,10 @@ const displayFunctions = {
     "searchOptions": getSearchOptions,
 };
 
+const TIME_TO_HIDE_MODAL = 4 * 1000;
+const START_TIME_TO_SHOW_MODAL = 2 * 1000;
 
 
-
-// DONT DO THIS:
-// setTimeout(() => {
-//     console.log("start running append")
-//     const a = document.createElement("DIV")
-//     a.id = "modal-message"
-//     a.innerText = "Check out our new Search";
-//     a.className = "modal-inline"
-//     document.body.append(a)
-
-// }, 1000)
-
-// setTimeout(() => {
-//     document.getElementById("modal-message").remove();
-
-// }, 4000)
 
 
 
@@ -150,7 +136,7 @@ function generateSingleCar(index, lp) {
 
 
 (function () {
-
+    startNotifications();
     DOM.listData = document.getElementById("data");
     DOM.cardsData = document.getElementById("data-cards");
     DOM.tableData = document.getElementById("table-data");
