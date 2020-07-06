@@ -12,6 +12,15 @@
     100% { transform: rotate(360deg); }
   }
   
+  .fixedd{
+      color:red;
+      background-color: lightgreen;
+      position: fixed;
+      top:0px;
+      left:0px;
+      width: 100%;
+      font-size: 30px;
+  }
 
   .margin > div {
     margin-left: 5px;

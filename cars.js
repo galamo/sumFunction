@@ -1,5 +1,6 @@
 const colors = ["red", "green", "yellow", "black"];
-const types = ["BMW", "MRCDS", "Mazda", "Subaro"];
+const generatedTypes = ["BMW", "MRCDS", "Mazda", "Subaro"];
+const types = generatedTypes.map(s => s.toLocaleLowerCase())
 const doors = [2, 4, 5];
 const DOM = {}
 const DATA = generateCars(100, true)
@@ -12,14 +13,14 @@ const displayFunctions = {
     "searchOptions": getSearchOptions,
 };
 
+
 const headers = [[
     {
         value: "lp",
         label: "LP",
         isVisible: true,
         isConstant: false,
-        isSearchable: false
-
+        isSearchable: true
     },
     {
         value: "color",
@@ -32,7 +33,7 @@ const headers = [[
     {
         value: "type",
         label: "Type",
-        isVisible: false,
+        isVisible: true,
         isConstant: false,
         isSearchable: true,
     },
@@ -78,12 +79,13 @@ function generateCars(numberOfCars, isArray) { //return array with Cars ( each c
             cars[singleCar.lp.toString()] = singleCar;
         }
     }
+    cars.push(generateSingleCar(1, 123456789));
     return cars;
 }
 
-function generateSingleCar(index) {
+function generateSingleCar(index, lp) {
     return {
-        lp: _generateLP(),
+        lp: lp || _generateLP(),
         color: _generateColor(),
         type: _generateType(),
         doors: _generateDoors(),
@@ -184,18 +186,27 @@ function generateSingleCar(index) {
 
     searchOperation.addEventListener("click", function () {
         const value = document.getElementById("searchValue").value;
+        const searchBy = document.getElementById("search-select").value;
+        console.log(typeof value);
         if (!value) return;
-        const result = DATA.filter(car => { return car.type.toLowerCase() === value.toLowerCase() })
-        if (DOM.whatToDraw === "table") {
-            draw(result, DOM.tableData, "table")
-            draw(headers, DOM.tableHead, "tableHeader", false)
-        }
-        if (DOM.whatToDraw === "cards") {
-            draw(result, DOM.cardsData, "cards")
-        }
-        if (DOM.whatToDraw === "list") {
-            draw(result, DOM.listData, "list")
-        }
+
+        const currentValue = typeof value === 'string' ? value.toLowerCase() : value;
+        console.log(currentValue, searchBy)
+        const result = DATA.filter(car => {
+            const stringValue = car[searchBy].toString();
+            return stringValue === currentValue
+        })
+        _drawTable(result, headers);
+        // if (DOM.whatToDraw === "table") {
+        //     draw(result, DOM.tableData, "table")
+        //     draw(headers, DOM.tableHead, "tableHeader", false)
+        // }
+        // if (DOM.whatToDraw === "cards") {
+        //     draw(result, DOM.cardsData, "cards")
+        // }
+        // if (DOM.whatToDraw === "list") {
+        //     draw(result, DOM.listData, "list")
+        // }
 
     })
 }())
@@ -363,6 +374,7 @@ function getSearchOptions(headers) {
 
     function _getSelect() {
         const select = document.createElement("SELECT");
+        select.id = "search-select";
         select.classList.add("form-control");
         return select;
     }
