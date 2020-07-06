@@ -18,7 +18,7 @@ const headers = [[
         label: "LP",
         isVisible: true,
         isConstant: false,
-        isSearchable: true
+        isSearchable: false
     },
     {
         value: "color",
@@ -345,6 +345,6 @@ function getRowItem(carData) {
     }
 }
 
-function getSearchOptions(){
+function getSearchOptions() {
     // return <select> [ <option></option>,<option></option>,<option></option>,<option></option> ] </select>
 }
