@@ -9,7 +9,7 @@ const displayFunctions = {
     "table": getRowItem,
     "tableHeader": getRowHeaderItem,
     "getCheckboxes": getCheckboxes,
-    // "searchOptions": getSearchOptions,
+    "searchOptions": getSearchOptions,
 };
 
 const headers = [[
@@ -354,4 +354,7 @@ function getRowItem(carData) {
     }
 }
 
+function getSearchOptions() {
+    //return ready select 
+}
 
