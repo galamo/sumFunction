@@ -13,13 +13,6 @@ const displayFunctions = {
     "searchOptions": getSearchOptions,
 };
 
-const TIME_TO_HIDE_MODAL = 4 * 1000;
-const START_TIME_TO_SHOW_MODAL = 2 * 1000;
-
-
-
-
-
 const headers = [[
     {
         value: "lp",
@@ -85,13 +78,13 @@ function generateCars(numberOfCars, isArray) { //return array with Cars ( each c
             cars[singleCar.lp.toString()] = singleCar;
         }
     }
-    cars.push(generateSingleCar(1, 123456789));
+    
     return cars;
 }
 
-function generateSingleCar(index, lp) {
+function generateSingleCar(index) {
     return {
-        lp: lp || _generateLP(),
+        lp: _generateLP(),
         color: _generateColor(),
         type: _generateType(),
         doors: _generateDoors(),
@@ -137,42 +130,35 @@ function generateSingleCar(index, lp) {
 
 (function () {
     startNotifications();
-    DOM.listData = document.getElementById("data");
-    DOM.cardsData = document.getElementById("data-cards");
-    DOM.tableData = document.getElementById("table-data");
-    DOM.tableHead = document.getElementById("table-head");
-    DOM.checkboxes = document.getElementById("checkboxes");
-    searchOptions = document.getElementById("searchOptions");
+    DOM.listData = $('#data');
+    DOM.cardsData = $("#data-cards");
+    DOM.tableData = $("#table-data");
+    DOM.tableHead = $("#table-head");
+    DOM.checkboxes = $("#checkboxes");
+    searchOptions = $("#searchOptions");
 
     DOM.whatToDraw = "list"
 
     draw(DATA, DOM.listData, DOM.whatToDraw);
     draw(headers, searchOptions, "searchOptions", false);
 
-    const listViewButton = document.getElementById("listView");
-    const cardViewButton = document.getElementById("cardView");
-    const tableViewButton = document.getElementById("tableView");
-    const searchOperation = document.getElementById("searchOperation");
-
-
-
-    listViewButton.addEventListener("click", function () {
+    $("#listView").on("click", function () {
         DOM.whatToDraw = "list";
         draw(DATA, DOM.listData, "list")
     })
-    cardViewButton.addEventListener("click", function () {
+    $("#cardView").on("click", function () {
         DOM.whatToDraw = "cards"
         draw(DATA, DOM.cardsData, "cards")
     })
-    tableViewButton.addEventListener("click", function () {
+    $("#tableView").on("click", function () {
         _drawTable(DATA, headers)
     })
 
 
 
-    searchOperation.addEventListener("click", function () {
-        const value = document.getElementById("searchValue").value;
-        const searchBy = document.getElementById("search-select").value;
+    $("#searchOperation").on("click", function () {
+        const value = $("#searchValue").val();
+        const searchBy = $("#search-select").val();
         if (!value) return;
 
         const currentValue = typeof value === 'string' ? value.toLowerCase() : value;
@@ -182,8 +168,8 @@ function generateSingleCar(index, lp) {
             return stringValue === currentValue
         })
         if (DOM.whatToDraw === "table") return _drawTable(result, headers);
-        if (DOM.whatToDraw === "cards") return draw(result, DOM.cardsData, "cards")
-        return draw(result, DOM.listData, "list")
+        if (DOM.whatToDraw === "cards") return draw(result, DOM.cardsData, "cards");
+        return draw(result, DOM.listData, "list");
 
     })
 }())
@@ -208,15 +194,10 @@ function draw(data, domContainer, displayType, clear = true) {
 }
 
 function clearDOM() {
-    // DOM.listData.innerHTML = "";
-    // DOM.cardsData.innerHTML = "";
-    // DOM.tableData.innerHTML = "";
-
-    // this is more dynamic
 
     Object.keys(DOM).forEach((keyInDom) => {
         if (typeof DOM[keyInDom] !== "object") return;
-        DOM[keyInDom].innerHTML = "";
+        DOM[keyInDom].html('');
     })
 
 }
@@ -293,7 +274,6 @@ function getCheckboxes(internalHeders) {
         const headersConfig = headers[0];
         if (!Array.isArray(headersConfig)) return;
         const isSunRoofHeaderObj = headersConfig.find(function (headerObj) {
-            console.log(this)
             return headerObj.value === elementId
         })
         // const isSunRoofHeaderObj = headersConfig.find(h => h.value === "isSunRoof") shorter way
