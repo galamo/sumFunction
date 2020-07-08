@@ -137,22 +137,22 @@ function generateSingleCar(index, lp) {
 
 (function () {
     startNotifications();
-    DOM.listData = document.getElementById("data");
-    DOM.cardsData = document.getElementById("data-cards");
-    DOM.tableData = document.getElementById("table-data");
-    DOM.tableHead = document.getElementById("table-head");
-    DOM.checkboxes = document.getElementById("checkboxes");
-    searchOptions = document.getElementById("searchOptions");
+    DOM.listData = $("#data");
+    DOM.cardsData = $("#data-cards");
+    DOM.tableData = $("#table-data");
+    DOM.tableHead = $("#table-head");
+    DOM.checkboxes = $("#checkboxes");
+    searchOptions = $("#searchOptions");
 
     DOM.whatToDraw = "list"
 
     draw(DATA, DOM.listData, DOM.whatToDraw);
     draw(headers, searchOptions, "searchOptions", false);
 
-    const listViewButton = document.getElementById("listView");
-    const cardViewButton = document.getElementById("cardView");
-    const tableViewButton = document.getElementById("tableView");
-    const searchOperation = document.getElementById("searchOperation");
+    const listViewButton = $("#listView");
+    const cardViewButton = $("#cardView");
+    const tableViewButton = $("#tableView");
+    const searchOperation = $("#searchOperation");
 
 
 
@@ -171,8 +171,8 @@ function generateSingleCar(index, lp) {
 
 
     searchOperation.addEventListener("click", function () {
-        const value = document.getElementById("searchValue").value;
-        const searchBy = document.getElementById("search-select").value;
+        const value = $("#searchValue").value;
+        const searchBy = $("#search-select").value;
         if (!value) return;
 
         const currentValue = typeof value === 'string' ? value.toLowerCase() : value;

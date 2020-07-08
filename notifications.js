@@ -13,13 +13,13 @@ function startNotifications() {
     function _showModal({ message, hideTime, showTime }) {
         setTimeout(() => {
             const modalId = message.replace(/ /g, "_");
-            document.body.append(getModal(message, modalId))
+            $("body").append(getModal(message, modalId))
             _hideModal(hideTime, modalId);
         }, showTime);
     }
     function _hideModal(hideTime, id) {
         setTimeout(() => {
-            document.getElementById(id).remove()
+            $("`#${id}`").remove()
         }, hideTime);
     }
 }
