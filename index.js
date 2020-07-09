@@ -17,11 +17,11 @@ $(function () { //DOM is ready
         listContent.append(newLi)
         function _getListItem (value) {
             const cls = 'list-group-item'
-            const listItem = $('<li></li>').text(value).addClass(cls)
-            const deleteButton = $("<button></button>").text("Clone").addClass("btn btn-danger").css("float", "right")
-            deleteButton.on("click", cloneMe)
-            listItem.append(deleteButton)
+            const listItem = $('<li></li>').text(value).addClass(cls).append(_getCloneButton())
             return listItem
+            function _getCloneButton () {
+                return $("<button></button>").text("Clone").addClass("btn btn-danger").css("float", "right").on("click", cloneMe)
+            }
         }
     })
 
