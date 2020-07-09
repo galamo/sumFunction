@@ -1,0 +1,1 @@
+$("#container-svg").html($("#container-svg").html() + SVG.tiger)
