@@ -6,7 +6,6 @@ $(function () { //DOM is ready
     const clearOperation = $("#clearList")
     const listContent = $("#list")
 
-
     // console.log(listContent.css({ "color": "blue", "fontSize": "40px" }))
 
 
@@ -18,12 +17,21 @@ $(function () { //DOM is ready
         listContent.append(newLi)
         function _getListItem (value) {
             const cls = 'list-group-item'
-            const liMadeByJquery = $('<li></li>').text(value).addClass(cls)
-            return liMadeByJquery
+            const listItem = $('<li></li>').text(value).addClass(cls)
+            const deleteButton = $("<button></button>").text("Clone").addClass("btn btn-danger").css("float", "right")
+            deleteButton.on("click", cloneMe)
+            listItem.append(deleteButton)
+            return listItem
         }
     })
 
+    function cloneMe () {
+        $(this).parent().clone(true).appendTo(listContent)
+    }
+
+
 })
+
 
 
 // const element
