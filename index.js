@@ -9,6 +9,7 @@ $(function () { //DOM is ready
 
     // console.log(listContent.css({ "color": "blue", "fontSize": "40px" }))
 
+
     clearOperation.on("click", () => {
         listContent.empty()
     })
