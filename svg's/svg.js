@@ -1,5 +1,5 @@
 const SVG = {}
-SVG.tiger = `     <svg xmlns="http://www.w3.org/2000/svg" id="svg2" viewBox="0 0 900 900" version="1.1">
+SVG.tiger = `     <svg xmlns="http://www.w3.org/2000/svg" height="100" width="100" x="300" id="svg2" viewBox="0 0 900 900" version="1.1">
 <g id="g4" fill="none" transform="matrix(1.7656463,0,0,1.7656463,324.90716,255.00942)">
     <g id="g6" stroke-width="0.17200001" stroke="#000" fill="#FFF">
         <path id="path8"
